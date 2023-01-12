@@ -1,0 +1,7 @@
+
+**/.git/*
+
+commit-me.cmd
+
+# Crash log files
+crash.log

@@ -1,8 +1,6 @@
 import requests
-import json
 import argparse
 import sys
-import time
 
 def run_api_delete_user(uid, token):
     url = "https://app.terraform.io/api/v2/organization-memberships/" + uid
