@@ -1,21 +1,19 @@
 import requests
-import json
 import argparse
 import sys
-import time
 
 def run_api_delete(ws_id,token):  
-    url = "/workspaces/:" + ws_id + "/actions/safe-delete"
+    url = "https://app.terraform.io/api/v2/workspaces/" + ws_id + "/actions/safe-delete"
     payload={}
     headers = {
-      'Authorization': 'Bearer $TOKEN',
+      'Authorization': 'Bearer ' + token,
       'Content-Type': 'application/vnd.api+json'
     }
 
     response = requests.request("POST", url, headers=headers, data=payload)
-    jsonResponse = response.json()
-    print(jsonResponse)
-    return jsonResponse
+    # jsonResponse = response.json()
+    print(response)
+    return response
 
 
 parser = argparse.ArgumentParser(
