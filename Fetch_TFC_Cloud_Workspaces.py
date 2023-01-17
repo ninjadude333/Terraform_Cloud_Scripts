@@ -48,8 +48,9 @@ parser = argparse.ArgumentParser(description='delete users for TFC')
 
 parser.add_argument('-org', action="store", dest="org_name", help="Organization Name", required=True)
 parser.add_argument('-search_string', action="store", dest="s_string", help="string to search - will be wrapped with *")
-parser.add_argument('-file', action="store", dest="filePath", help="string to search - will be wrapped with *")
+parser.add_argument('-file', action="store", dest="filePath", help="export result to file - specify complete file path")
 parser.add_argument('-token', action="store", dest="tfc_token", help="Api TOKEN", required=True)
+parser.add_argument('-append', action="store_true", dest="append", help="append to file? or overwrite?")
 parser.add_argument('-v', action="store_true", dest="verbose", help="Debug Mode, show extra output in console.")
 
 if not len(sys.argv) > 1:
@@ -61,14 +62,19 @@ else:
     s_string = args.s_string
     filePath = args.filePath
     token = args.tfc_token
+    append = args.append
     verbose = args.verbose
 
 
 if __name__ == "__main__":
     id_list = run_api_get_workspaces(org_name,token,s_string)
+    mode = "a" if append else "w"
     if filePath:
-        f = open(filePath, "w")
-        f.write('\n'.join(id_list))
+        f = open(filePath, mode)
+        if append:
+            f.write("\n"+'\n'.join(id_list))
+        else:
+            f.write('\n'.join(id_list))
         f.close()
     else:
         print(id_list)
