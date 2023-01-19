@@ -1,11 +1,9 @@
 import requests
-import json
 import argparse
 import sys
-import time
 
-def run_api_delete_user(uid, token):
-    url = "https://app.terraform.io/api/v2/organization-memberships/" + uid
+def run_api_delete_proj(pid, token):
+    url = "https://app.terraform.io/api/v2/projects/" + pid
 
     payload={}
     headers = {
@@ -20,19 +18,19 @@ def run_api_delete_user(uid, token):
 
 
 parser = argparse.ArgumentParser(
-    prog='Delte_TFC_Cloud_Users.exe',
+    prog='Delte_TFC_Cloud_Projects.exe',
     formatter_class=argparse.RawDescriptionHelpFormatter,
     description=('''\
-        This tool will send a delete users from Terraform Cloud
+        This tool will send a delete projects from Terraform Cloud
         Ver 1.0.0
         Coded By The_Dude
         '''),
     epilog=('''\
 
         example for running the tool:
-        Delte_TFC_Cloud_Users.exe -org MyOrg -uid xcvbnmdfgdfgdfgd -token <myToken>
+        Delte_TFC_Cloud_Projectss.exe -org MyOrg -pid xcvbnmdfgdfgdfgd -token <myToken>
         
-        -uid_file can be used instead of -uid to specify a txt file containing multiple uid's seperated by newline.
+        -pid_file can be used instead of -uid to specify a txt file containing multiple pid's seperated by newline.
 
       use -v for verbose/debug mode
 
@@ -41,8 +39,8 @@ parser = argparse.ArgumentParser(
 parser = argparse.ArgumentParser(description='delete users for TFC')
 
 parser.add_argument('-org', action="store", dest="org_name", help="Organization Name", required=True)
-parser.add_argument('-uid', action="store", dest="uid", help="Id of user to delete")
-parser.add_argument('-uid_file', action="store", dest="uids_file_name", help="Full path including file name to the uid's file")
+parser.add_argument('-pid', action="store", dest="pid", help="Id of project to delete")
+parser.add_argument('-pid_file', action="store", dest="pids_file_name", help="Full path including file name to the pid's file")
 parser.add_argument('-token', action="store", dest="tfc_token", help="Api TOKEN", required=True)
 parser.add_argument('-v', action="store_true", dest="verbose", help="Debug Mode, show extra output in console.")
 
@@ -52,20 +50,20 @@ if not len(sys.argv) > 1:
 else:
     args = parser.parse_args()
     org_name = args.org_name
-    uid = args.uid
-    uids_file = args.uids_file_name
+    pid = args.pid
+    pids_file = args.pids_file_name
     token = args.tfc_token
     verbose = args.verbose
 
 
 if __name__ == "__main__":
  
-    if uid:
-        result = run_api_delete_user(uid,token)
+    if pid:
+        result = run_api_delete_proj(pid,token)
         print("result: " + str(result.status_code))
         
-    elif uids_file:
-        file1 = open(uids_file, 'r')
+    elif pids_file:
+        file1 = open(pids_file, 'r')
         count = 0
           
         while True:
@@ -80,8 +78,8 @@ if __name__ == "__main__":
                 break    
 
             print(line)
-            result = run_api_delete_user(line.strip(),token)
+            result = run_api_delete_proj(line.strip(),token)
             print("result: " + str(result.status_code))
         file1.close()
     else:
-        print ("you must specify eighter a single uid or a file with multipe uids.")
+        print ("you must specify eighter a single pid or a file with multipe pids.")

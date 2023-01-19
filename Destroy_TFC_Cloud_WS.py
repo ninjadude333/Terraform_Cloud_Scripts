@@ -46,7 +46,7 @@ def get_run_status(run_id, token):
     return jsonResponse["data"]["attributes"]["status"]
 
 def wait_for_run_finish(run_id,status,token,ttl):
-    while 'finish' not in status and 'error' not in status and 'cancel' not in status:
+    while 'finish' not in status and 'error' not in status and 'cancel' not in status and 'applied' not in status:
             time.sleep(ttl)
             status = get_run_status(run_id,token)
             if verbose:
